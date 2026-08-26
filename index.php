@@ -24,3 +24,25 @@ require __DIR__ . '/includes/header.php';
     <div class="flash flash-success">Hero record deleted.</div>
 <?php endif; ?>
 
+<!--this block opens the grid container and starts the loop, wrapping each hero in a clickable card link -->
+<div class="hero-grid">
+    <?php foreach ($heroes as $hero): ?>
+        <a class="hero-card" href="hero.php?id=<?= (int)$hero['id'] ?>"> <!-- we cast the id to int here as a precaution safety net against injection since it's going straight into the URL -->
+            <div class="hero-card-image" style="background-image:url('<?= htmlspecialchars($hero['image_url'] ?: 'https://placehold.co/300x300/0f172a/06b6d4?text=' . urlencode($hero['hero_name'])) ?>')"></div> <!-- this block renders the hero's image as a background, falling back to a generated placeholder -->
+            <!-- we go back to a placeholder image here if the hero doesn't have any set, and we use their name as placeholder text -->
+            <div class="hero-card-body">
+                <span class="hero-card-team"><?= htmlspecialchars($hero['team']) ?></span>
+                <h2><?= htmlspecialchars($hero['hero_name']) ?></h2>
+                <p class="hero-card-real"><?= htmlspecialchars($hero['real_name']) ?></p>
+                <p class="hero-card-bio"><?= htmlspecialchars($hero['short_bio']) ?></p>
+            </div>
+        </a>
+    <?php endforeach; ?>
+</div>
+<!-- this  handles a situation where the heroes table is empty and closes out the grid container -->
+ <?php if (empty($heroes)): ?>
+        <p class="empty-state">No heroes on file yet.</p>
+    <?php endif; ?>
+</div>
+
+<?php require __DIR__ . '/includes/footer.php'; ?>

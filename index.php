@@ -17,3 +17,9 @@ require __DIR__ . '/includes/header.php';
         <p class="lede">Every mutant currently on file. Log in to update or remove a record.</p>
     </div>
 </div>
+
+<!--this block checks for the deleted query param and shows a one-time success message after a redirect-->
+<?php if (isset($_GET['deleted'])): ?>
+    <div class="flash flash-success">Hero record deleted.</div>
+<?php endif; ?>
+

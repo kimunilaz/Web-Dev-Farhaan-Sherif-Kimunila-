@@ -20,6 +20,7 @@ require __DIR__ . '/includes/header.php';
 
 <!--this block checks for the deleted query param and shows a one-time success message after a redirect-->
 <?php if (isset($_GET['deleted'])): ?>
+    <!-- we show this success flash message here to confirm that the hero record has been deleted successfully -->
     <div class="flash flash-success">Hero record deleted.</div>
 <?php endif; ?>
 

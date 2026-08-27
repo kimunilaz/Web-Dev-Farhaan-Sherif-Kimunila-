@@ -40,8 +40,22 @@ require __DIR__ . '/includes/header.php';
             <div><dt>Status</dt><dd><?= htmlspecialchars($hero['status']) ?></dd></div>
             <div><dt>First appearance</dt><dd><?= $hero['date_created'] ? htmlspecialchars(date('F Y', strtotime($hero['date_created']))) : '—' ?></dd></div>
         </dl>
+        <h3>Biography</h3>
+        <p class="hero-detail-bio"><?= nl2br(htmlspecialchars($hero['long_bio'])) ?></p>
+   <!-- This is  Only shown to logged-in users-->
+<?php if (is_logged_in()): ?>
+            <div class="detail-actions">
+                <a class="btn btn-primary" href="edit.php?id=<?= (int)$hero['id'] ?>">Update record</a>
+                <form action="delete.php" method="post" onsubmit="return confirm('Delete this hero permanently? This cannot be undone.');">
+                    <input type="hidden" name="id" value="<?= (int)$hero['id'] ?>">
+                    <button type="submit" class="btn btn-danger">Delete record</button>
+                </form>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
 
-
+<?php require __DIR__ . '/includes/footer.php'; ?>
 
 
 

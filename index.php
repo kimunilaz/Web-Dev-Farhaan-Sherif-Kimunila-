@@ -45,4 +45,4 @@ require __DIR__ . '/includes/header.php';
     <?php endif; ?>
 </div>
 
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?><!-- we bring in our shared footer include here to close out the page  -->

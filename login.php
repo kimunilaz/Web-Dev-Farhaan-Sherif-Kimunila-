@@ -33,30 +33,13 @@
 </div>
 
 
-<!-- we added this to load the client-side validation which  catches empty
-     fields instantly in the browser, before the form is even sent-->
+<!-- we added this to load the client-side validation which  catches empty fields instantly in the browser, before the form is even sent-->
 <script src="js/validate.js"></script>
 
 <!--  This part closes out the shared HTML which are: </main>, the
      footer bar, and the closing </body></html> tags -->
 <?php require __DIR__ . '/includes/footer.php'; 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

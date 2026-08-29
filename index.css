@@ -1,0 +1,13 @@
+:root {
+    --bg: #0f172a;
+    --bg-panel: #16213a;
+    --bg-panel-2: #1c2a4a;
+    --cyan: #06b6d4;
+    --blue: #2563eb;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --danger: #ef4444;
+    --border: #27334d;
+    --radius: 10px;
+}
+

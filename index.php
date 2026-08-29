@@ -43,6 +43,6 @@ require __DIR__ . '/includes/header.php';
  <?php if (empty($heroes)): ?>
         <p class="empty-state">No heroes on file yet.</p>
     <?php endif; ?>
-</div>
+
 
 <?php require __DIR__ . '/includes/footer.php'; ?><!-- we bring in our shared footer include here to close out the page  -->

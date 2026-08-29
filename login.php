@@ -1,9 +1,36 @@
+<?php
+require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/includes/auth.php';
 
+$error = '';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
 
+    if ($username === '' || $password === '') {
+        $error = 'Please enter both a username and password.';
+    } else {
+        $stmt = $pdo->prepare('SELECT id, username, password FROM users WHERE username = ?');
+        $stmt->execute([$username]);
+        $user = $stmt->fetch();
 
+        if ($user && password_verify($password, $user['password'])) {
+            // This helps prevent session fixation on privilege change
+            session_regenerate_id(true);
+            $_SESSION['user_id']  = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            header('Location: index.php');
+            exit;
+        } else {
+            $error = 'Incorrect username or password.';
+        }
+    }
+}
 
-
+$page_title = 'Log in';
+require __DIR__ . '/includes/header.php';
+?>
 
 
 <!-- we added this to open the main content area for our log-in form, which is closed in

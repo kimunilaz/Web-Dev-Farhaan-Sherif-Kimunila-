@@ -1,44 +1,76 @@
 <?php
-session_start();
+require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/includes/auth.php';
 
-// __DIR__ makes the path work no matter which folder opens this page.
-require_once __DIR__ . '/../xmen-roster/includes/dp_connect.php';
+redirect_if_logged_in();
 
-$error = "";
-$username = "";
+$registration_mode = $registration_mode ?? false;
+$error = '';
+$username = '';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    if ($username === '' || $password === '') {
-        $error = "Please enter your username and password.";
-    } else {
-        // A prepared statement keeps the username safe in the SQL query.
-        $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    if ($registration_mode) {
+        $password_confirmation = $_POST['password_confirmation'] ?? '';
 
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
+        if ($username === '' || $password === '' || $password_confirmation === '') {
+            $error = 'Please complete all fields.';
+        } elseif (strlen($username) < 3 || strlen($username) > 50) {
+            $error = 'Username must be between 3 and 50 characters.';
+        } elseif (!preg_match('/^[A-Za-z0-9_.-]+$/', $username)) {
+            $error = 'Username may contain letters, numbers, dots, underscores, and hyphens only.';
+        } elseif (strlen($password) < 8) {
+            $error = 'Password must contain at least 8 characters.';
+        } elseif ($password !== $password_confirmation) {
+            $error = 'Passwords do not match.';
+        } else {
+            $check = $pdo->prepare('SELECT id FROM users WHERE username = ?');
+            $check->execute([$username]);
 
-            if (password_verify($password, $user['password'])) {
-                session_regenerate_id(true);
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
+            if ($check->fetch()) {
+                $error = 'That username is already registered.';
+            } else {
+                try {
+                    $insert = $pdo->prepare('INSERT INTO users (username, password) VALUES (?, ?)');
+                    $insert->execute([$username, password_hash($password, PASSWORD_DEFAULT)]);
 
-                $stmt->close();
-                $conn->close();
+                    login_user([
+                        'id' => $pdo->lastInsertId(),
+                        'username' => $username,
+                    ]);
 
-                header("Location: ../index.php");
-                exit;
+                    header('Location: ' . app_url('index.php'));
+                    exit;
+                } catch (PDOException $exception) {
+                    if ($exception->getCode() === '23000') {
+                        $error = 'That username is already registered.';
+                    } else {
+                        throw $exception;
+                    }
+                }
             }
         }
+    } elseif ($username === '' || $password === '') {
+        $error = 'Please enter your username and password.';
+    } else {
+        $stmt = $pdo->prepare('SELECT id, username, password FROM users WHERE username = ?');
+        $stmt->execute([$username]);
+        $user = $stmt->fetch();
 
-        // Use the same message for a wrong username or password.
-        $error = "Invalid username or password.";
-        $stmt->close();
+        if ($user && password_verify($password, $user['password'])) {
+            if (password_needs_rehash($user['password'], PASSWORD_DEFAULT)) {
+                $rehash = $pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
+                $rehash->execute([password_hash($password, PASSWORD_DEFAULT), $user['id']]);
+            }
+
+            login_user($user);
+            header('Location: ' . app_url('index.php'));
+            exit;
+        }
+
+        $error = 'Invalid username or password.';
     }
 }
 ?>
@@ -47,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in</title>
+    <title><?= $registration_mode ? 'Register' : 'Log in' ?></title>
     <style>
         :root {
             color-scheme: light;
@@ -167,8 +199,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body>
     <main class="login-card">
-        <h1>Welcome back</h1>
-        <p class="intro">Log in to continue to your account.</p>
+        <h1><?= $registration_mode ? 'Create an account' : 'Welcome back' ?></h1>
+        <p class="intro"><?= $registration_mode ? 'Register to manage the Xavier roster.' : 'Log in to continue to your account.' ?></p>
 
         <?php if ($error): ?>
             <p class="error-message" role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
@@ -194,13 +226,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     type="password"
                     id="password"
                     name="password"
-                    autocomplete="current-password"
+                    autocomplete="<?= $registration_mode ? 'new-password' : 'current-password' ?>"
                     required
                 >
             </div>
 
-            <button type="submit">Log in</button>
+            <?php if ($registration_mode): ?>
+                <div class="form-group">
+                    <label for="password_confirmation">Confirm password</label>
+                    <input
+                        type="password"
+                        id="password_confirmation"
+                        name="password_confirmation"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+            <?php endif; ?>
+
+            <button type="submit"><?= $registration_mode ? 'Register' : 'Log in' ?></button>
         </form>
+
+        <p class="intro">
+            <?php if ($registration_mode): ?>
+                Already registered? <a href="<?= htmlspecialchars(app_url('login.php')) ?>">Log in</a>.
+            <?php else: ?>
+                Need an account? <a href="<?= htmlspecialchars(app_url('register.php')) ?>">Register</a>.
+            <?php endif; ?>
+            <a href="<?= htmlspecialchars(app_url('index.php')) ?>">Back to roster</a>.
+        </p>
     </main>
 </body>
 </html>

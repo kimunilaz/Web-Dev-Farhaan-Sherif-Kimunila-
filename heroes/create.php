@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/config/db.php';
-require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_login(); // only authenticated users may create a new hero
 
 $errors = [];
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insert->execute([$hero_name, $real_name, $short_bio, $long_bio, $image_url, $powers, $team, $publisher, $status]);
 
         $new_id = $pdo->lastInsertId();
-        header('Location: hero.php?id=' . $new_id . '&created=1');
+        header('Location: ' . app_url('heroes/hero.php') . '?id=' . $new_id . '&created=1');
         exit;
     }
 
@@ -44,10 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $page_title = 'Add a new hero';
-require __DIR__ . '/includes/header.php';
+require __DIR__ . '/../includes/header.php';
 ?>
 
-<a class="back-link" href="index.php">&larr; Back to roster</a>
+<a class="back-link" href="<?= htmlspecialchars(app_url('index.php')) ?>">&larr; Back to roster</a>
 
 <div class="form-wrap">
     <p class="eyebrow">New Record</p>
@@ -101,5 +101,4 @@ require __DIR__ . '/includes/header.php';
     </form>
 </div>
 
-<script src="js/validate.js"></script>
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require __DIR__ . '/../includes/footer.php'; ?>

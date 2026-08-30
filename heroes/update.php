@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__ . '/config/db.php';
-require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_login(); // only authenticated users may reach this page
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) ?: filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 if (!$id) {
-    header('Location: index.php');
+    header('Location: ' . app_url('index.php'));
     exit;
 }
 
@@ -14,7 +14,7 @@ $stmt->execute([$id]);
 $hero = $stmt->fetch();
 
 if (!$hero) {
-    header('Location: index.php');
+    header('Location: ' . app_url('index.php'));
     exit;
 }
 
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
         $update->execute([$hero_name, $real_name, $short_bio, $long_bio, $image_url, $powers, $team, $publisher, $status, $id]);
 
-        header('Location: hero.php?id=' . $id . '&updated=1');
+        header('Location: ' . app_url('heroes/hero.php') . '?id=' . $id . '&updated=1');
         exit;
     }
 
@@ -51,10 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $page_title = 'Edit ' . $hero['hero_name'];
-require __DIR__ . '/includes/header.php';
+require __DIR__ . '/../includes/header.php';
 ?>
 
-<a class="back-link" href="hero.php?id=<?= (int)$hero['id'] ?>">&larr; Back to <?= htmlspecialchars($hero['hero_name']) ?></a>
+<a class="back-link" href="<?= htmlspecialchars(app_url('heroes/hero.php')) ?>?id=<?= (int)$hero['id'] ?>">&larr; Back to <?= htmlspecialchars($hero['hero_name']) ?></a>
 
 <div class="form-wrap">
     <p class="eyebrow">Update Record</p>
@@ -110,5 +110,4 @@ require __DIR__ . '/includes/header.php';
     </form>
 </div>
 
-<script src="js/validate.js"></script>
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require __DIR__ . '/../includes/footer.php'; ?>

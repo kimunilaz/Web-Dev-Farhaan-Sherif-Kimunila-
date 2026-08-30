@@ -27,8 +27,8 @@ require __DIR__ . '/includes/header.php';
 <!--this block opens the grid container and starts the loop, wrapping each hero in a clickable card link -->
 <div class="hero-grid">
     <?php foreach ($heroes as $hero): ?>
-        <a class="hero-card" href="hero.php?id=<?= (int)$hero['id'] ?>"> <!-- we cast the id to int here as a precaution safety net against injection since it's going straight into the URL -->
-            <div class="hero-card-image" style="background-image:url('<?= htmlspecialchars($hero['image_url'] ?: 'https://placehold.co/300x300/0f172a/06b6d4?text=' . urlencode($hero['hero_name'])) ?>')"></div> <!-- this block renders the hero's image as a background, falling back to a generated placeholder -->
+        <a class="hero-card" href="<?= htmlspecialchars(app_url('heroes/hero.php')) ?>?id=<?= (int)$hero['id'] ?>"> <!-- we cast the id to int here as a precaution safety net against injection since it's going straight into the URL -->
+            <div class="hero-card-image" style="background-image:url('<?= htmlspecialchars(hero_image_url($hero['image_url'], $hero['hero_name'])) ?>')"></div> <!-- this block renders the hero's image as a background, falling back to a generated placeholder -->
             <!-- we go back to a placeholder image here if the hero doesn't have any set, and we use their name as placeholder text -->
             <div class="hero-card-body">
                 <span class="hero-card-team"><?= htmlspecialchars($hero['team']) ?></span>

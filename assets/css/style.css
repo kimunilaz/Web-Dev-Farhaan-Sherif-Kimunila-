@@ -1,0 +1,250 @@
+
+:root {
+    --bg: #0f172a;
+    --bg-panel: #16213a;
+    --bg-panel-2: #1c2a4a;
+    --cyan: #06b6d4;
+    --blue: #2563eb;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --danger: #ef4444;
+    --border: #27334d;
+    --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+        radial-gradient(circle at 15% 0%, rgba(6, 182, 212, 0.10), transparent 40%),
+        radial-gradient(circle at 90% 20%, rgba(37, 99, 235, 0.12), transparent 45%);
+    color: var(--text);
+    font-family: 'Poppins', system-ui, sans-serif;
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin: 0 0 0.4rem;
+}
+
+/* This is for our Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--cyan), var(--blue));
+    color: #08111f;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+}
+.nav-links { display: flex; align-items: center; gap: 1.25rem; font-size: 0.92rem; }
+.nav-links a:hover { color: var(--cyan); }
+.nav-user { color: var(--text-dim); font-size: 0.85rem; }
+.nav-btn {
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    transition: border-color 0.15s, color 0.15s;
+}
+.nav-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/*This shows how our layout style will look like  */
+.page { max-width: 1080px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+.page-head { margin-bottom: 2rem; }
+.page-head h1 { font-size: 2rem; margin: 0 0 0.4rem; }
+.lede { color: var(--text-dim); max-width: 46ch; margin: 0; }
+.back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--text-dim); font-size: 0.9rem; }
+.back-link:hover { color: var(--cyan); }
+
+/* Hero grid / cards styles */
+.hero-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.25rem;
+}
+.hero-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.15s, border-color 0.15s;
+    display: flex;
+    flex-direction: column;
+}
+.hero-card:hover { transform: translateY(-3px); border-color: var(--cyan); }
+.hero-card-image {
+    height: 180px;
+    background-size: cover;
+    background-position: center top;
+    background-color: var(--bg-panel-2);
+    border-bottom: 1px solid var(--border);
+}
+.hero-card-body { padding: 1rem 1.1rem 1.3rem; }
+.hero-card-team {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cyan);
+}
+.hero-card h2 { font-size: 1.15rem; margin: 0.35rem 0 0.1rem; }
+.hero-card-real { color: var(--text-dim); font-size: 0.85rem; margin: 0 0 0.5rem; }
+.hero-card-bio { font-size: 0.88rem; color: var(--text); margin: 0; opacity: 0.85; }
+.empty-state { color: var(--text-dim); }
+
+/* Hero detail styles*/
+.hero-detail {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem;
+}
+.hero-detail-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius);
+    background-size: cover;
+    background-position: center top;
+    background-color: var(--bg-panel-2);
+    border: 1px solid var(--border);
+}
+.hero-detail-body h1 { margin: 0.3rem 0 0.2rem; font-size: 2rem; }
+.hero-detail-real { color: var(--text-dim); margin: 0 0 1.2rem; }
+.hero-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 0 0 1.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+.hero-meta dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+}
+.hero-meta dd { margin: 0; font-size: 0.92rem; }
+.hero-detail-bio { color: var(--text); opacity: 0.9; }
+.detail-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+
+
+
+/* This defines our buttons styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.4rem;
+    border-radius: 8px;
+    border: none;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.88; }
+.btn-primary { background: linear-gradient(135deg, var(--cyan), var(--blue)); color: #08111f; }
+.btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
+.btn-block { width: 100%; }
+
+/*This section is for our forms */
+.form-wrap, .auth-wrap { max-width: 520px; margin: 0 auto; }
+.auth-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2.2rem;
+}
+.form { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 1.2rem; }
+.form label {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin-top: 0.7rem;
+}
+.form input, .form textarea, .form select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 0.65rem 0.8rem;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.92rem;
+}
+.form input:focus, .form textarea:focus, .form select:focus {
+    outline: none;
+    border-color: var(--cyan);
+}
+.form textarea { resize: vertical; }
+.form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+.form button { margin-top: 1.5rem; }
+.field-invalid { border-color: var(--danger) !important; }
+.field-error { color: var(--danger); font-size: 0.78rem; margin-top: 0.25rem; }
+.hint { color: var(--text-dim); font-size: 0.82rem; margin-top: 1.2rem; }
+.hint code { background: var(--bg); padding: 0.1rem 0.4rem; border-radius: 4px; }
+
+/* All flash messages we specified takes this form */
+.flash {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    margin-bottom: 1.2rem;
+}
+.flash ul { margin: 0; padding-left: 1.2rem; }
+.flash-success { background: rgba(6, 182, 212, 0.12); border: 1px solid var(--cyan); color: var(--cyan); }
+.flash-error { background: rgba(239, 68, 68, 0.12); border: 1px solid var(--danger); color: #fca5a5; }
+
+/* Our Footer takes this style*/
+.site-footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .hero-detail { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .navbar { padding: 1rem; }
+    .page { padding: 2rem 1.2rem 3rem; }
+}

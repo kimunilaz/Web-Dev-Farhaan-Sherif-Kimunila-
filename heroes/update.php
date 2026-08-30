@@ -35,6 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($real_name === '') $errors[] = 'Real name is required.';
     if ($short_bio === '') $errors[] = 'Short biography is required.';
     if ($long_bio === '')  $errors[] = 'Long biography is required.';
+    if (strlen($hero_name) > 100) $errors[] = 'Hero name must not exceed 100 characters.';
+    if (strlen($real_name) > 100) $errors[] = 'Real name must not exceed 100 characters.';
+    if (strlen($short_bio) > 255) $errors[] = 'Short biography must not exceed 255 characters.';
+    if (strlen($image_url) > 255) $errors[] = 'Image URL must not exceed 255 characters.';
+    if (strlen($powers) > 255) $errors[] = 'Powers must not exceed 255 characters.';
+    if (strlen($team) > 100) $errors[] = 'Team must not exceed 100 characters.';
+    if (strlen($publisher) > 100) $errors[] = 'Publisher must not exceed 100 characters.';
+    if (!in_array($status, ['Active', 'Inactive', 'Deceased', 'Unknown'], true)) $errors[] = 'Please select a valid status.';
 
     if (empty($errors)) {
         $update = $pdo->prepare(
@@ -66,14 +74,14 @@ require __DIR__ . '/../includes/header.php';
         </div>
     <?php endif; ?>
 
-    <form method="post" class="form" id="hero-form" novalidate>
+    <form method="post" class="form" id="hero-form" data-validate="hero" novalidate>
         <input type="hidden" name="id" value="<?= (int)$hero['id'] ?>">
 
         <label for="hero_name">Hero name *</label>
-        <input type="text" id="hero_name" name="hero_name" required value="<?= htmlspecialchars($hero['hero_name']) ?>">
+        <input type="text" id="hero_name" name="hero_name" required maxlength="100" value="<?= htmlspecialchars($hero['hero_name']) ?>">
 
         <label for="real_name">Real name *</label>
-        <input type="text" id="real_name" name="real_name" required value="<?= htmlspecialchars($hero['real_name']) ?>">
+        <input type="text" id="real_name" name="real_name" required maxlength="100" value="<?= htmlspecialchars($hero['real_name']) ?>">
 
         <label for="short_bio">Short biography *</label>
         <input type="text" id="short_bio" name="short_bio" required maxlength="255" value="<?= htmlspecialchars($hero['short_bio']) ?>">
@@ -82,19 +90,19 @@ require __DIR__ . '/../includes/header.php';
         <textarea id="long_bio" name="long_bio" required rows="6"><?= htmlspecialchars($hero['long_bio']) ?></textarea>
 
         <label for="image_url">Image URL</label>
-        <input type="url" id="image_url" name="image_url" value="<?= htmlspecialchars($hero['image_url']) ?>">
+        <input type="url" id="image_url" name="image_url" maxlength="255" value="<?= htmlspecialchars($hero['image_url']) ?>">
 
         <label for="powers">Powers</label>
-        <input type="text" id="powers" name="powers" value="<?= htmlspecialchars($hero['powers']) ?>">
+        <input type="text" id="powers" name="powers" maxlength="255" value="<?= htmlspecialchars($hero['powers']) ?>">
 
         <div class="form-row">
             <div>
                 <label for="team">Team</label>
-                <input type="text" id="team" name="team" value="<?= htmlspecialchars($hero['team']) ?>">
+                <input type="text" id="team" name="team" maxlength="100" value="<?= htmlspecialchars($hero['team']) ?>">
             </div>
             <div>
                 <label for="publisher">Publisher</label>
-                <input type="text" id="publisher" name="publisher" value="<?= htmlspecialchars($hero['publisher']) ?>">
+                <input type="text" id="publisher" name="publisher" maxlength="100" value="<?= htmlspecialchars($hero['publisher']) ?>">
             </div>
             <div>
                 <label for="status">Status</label>

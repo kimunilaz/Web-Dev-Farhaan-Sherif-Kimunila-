@@ -206,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="error-message" role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
         <?php endif; ?>
 
-        <form method="post" action="">
+        <form method="post" action="" data-validate="auth">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input
@@ -215,6 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     name="username"
                     value="<?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?>"
                     autocomplete="username"
+                    maxlength="50"
                     required
                     autofocus
                 >
@@ -256,5 +257,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="<?= htmlspecialchars(app_url('index.php')) ?>">Back to roster</a>.
         </p>
     </main>
+    <script src="<?= htmlspecialchars(app_url('assets/js/validate.js')) ?>"></script>
 </body>
 </html>

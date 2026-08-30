@@ -22,6 +22,8 @@ require __DIR__ . '/includes/header.php';
 <?php if (isset($_GET['deleted'])): ?>
     <!-- we show this success flash message here to confirm that the hero record has been deleted successfully -->
     <div class="flash flash-success">Hero record deleted.</div>
+<?php elseif (isset($_GET['delete_error'])): ?>
+    <div class="flash flash-error">Hero record could not be deleted.</div>
 <?php endif; ?>
 
 <!--this block opens the grid container and starts the loop, wrapping each hero in a clickable card link -->
